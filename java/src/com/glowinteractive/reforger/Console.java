@@ -30,6 +30,10 @@ public class Console {
       System.exit(1);
     }
 
+    final String[] VERSION_STRING = Console.class.getPackage().getImplementationVersion().split("\\|");
+    System.out.println("The Fabled Reforger (" + VERSION_STRING[0] + ")");
+    System.out.println("Built: " + VERSION_STRING[1]);
+
     Reforger reforger = new Reforger(args[0], args[1]);
 
     reforger.run();

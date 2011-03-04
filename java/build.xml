@@ -11,13 +11,24 @@
     <description>Builds, tests, and runs the project Reforger.</description>
     <import file="nbproject/build-impl.xml"/>
 
-    <target name="-post-jar">
+    <target name="extract-revision">
+        <exec executable="../revision.sh" failonerror="true" outputproperty="revision.number"/>
+    </target>
+
+    <target name="extract-date">
+        <tstamp>
+            <format property="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+    </target>
+
+    <target depends="extract-revision,extract-date" name="-post-jar">
         <jar jarfile="${dist.dir}/Reforger.jar">
             <zipfileset src="${dist.jar}" excludes="META-INF/*"/>
             <zipfileset src="${libs.HTMLCleaner.classpath}" excludes="META-INF/*"/>
             <zipfileset src="${libs.Commons-Lang.classpath}" excludes="META-INF/*"/>
             <manifest>
-                <attribute name="Main-Class" value="com.glowinteractive.reforger.Console"/>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Implementation-Version" value="r${revision.number}|${date}"/>
             </manifest>
         </jar>
     </target>
