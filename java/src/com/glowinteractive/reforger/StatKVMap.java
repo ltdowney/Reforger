@@ -161,7 +161,7 @@ public final class StatKVMap {
     StringBuilder builder = new StringBuilder(60);
 
     for (Stat s : Stat.values()) {
-      builder.append(String.format("    %+4d", _data[s.ordinal()]))
+      builder.append(String.format("    %+5d", _data[s.ordinal()]))
              .append(" ")
              .append(s.shortName());
 

@@ -340,13 +340,14 @@ public final class Item implements Comparable<Item>, TagNodeVisitor {
         }
       }
 
+      // TODO: Refactor output to parse() via mutable / immutable extension to StatKVMap.
       if (key != null) {
         if (PARSE_MUTABLE) {
           _mutableStats = _mutableStats.add(new StatKVPair(key, value));
-          System.out.println("      +" + value + " " + key.shortName());
+          System.out.println(String.format("    %+5d", value) + " " + key.shortName());
         } else {
           _immutableStats = _immutableStats.add(new StatKVPair(key, value));
-          System.out.println("      +" + value + " " + key.shortName() + " [Immutable]");
+          System.out.println(String.format("    %+5d", value) + " " + key.shortName() + " [Immutable]");
         }
       }
     }
