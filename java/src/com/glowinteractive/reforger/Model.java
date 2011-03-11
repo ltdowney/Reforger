@@ -43,18 +43,19 @@ import java.util.EnumSet;
 
 public final class Model implements AbstractModel {
 
-  private static final int HIT_CAP = 961;
+  private static final int HIT_CAP = 601;
   private static final int EXP_CAP = 781;
 
   private static final float HIT_COEFFICIENT_TO_CAP = 1.00f;
-  private static final float HIT_COEFFICIENT_CAPPED = 0.05f;
+  private static final float HIT_COEFFICIENT_CAPPED = 0.35f;
 
-  private static final float EXP_COEFFICIENT_TO_CAP = 1.00f;
-  private static final float EXP_COEFFICIENT_CAPPED = 0.05f;
+  private static final float CRI_COEFFICIENT = 0.75f;
+  private static final float HST_COEFFICIENT = 0.15f;
 
-  private static final float MST_COEFFICIENT = 0.60f;
-  private static final float HST_COEFFICIENT = 0.90f;
-  private static final float CRI_COEFFICIENT = 0.30f;
+  private static final float EXP_COEFFICIENT_TO_CAP = 0.95f;
+  private static final float EXP_COEFFICIENT_CAPPED = 0.00f;
+
+  private static final float MST_COEFFICIENT = 0.55f;
 
   // EP value of hit/exp at respective caps.
   private static final float EP_HIT_CAP = HIT_CAP * HIT_COEFFICIENT_TO_CAP;
@@ -71,6 +72,9 @@ public final class Model implements AbstractModel {
       result += hit * HIT_COEFFICIENT_TO_CAP;
     }
 
+    result += stats[Stat.CRI.ordinal()] * CRI_COEFFICIENT;
+    result += stats[Stat.HST.ordinal()] * HST_COEFFICIENT;
+
     int exp = stats[Stat.EXP.ordinal()];
     if (exp > EXP_CAP) {
       result += (exp - EXP_CAP) * EXP_COEFFICIENT_CAPPED;
@@ -80,8 +84,6 @@ public final class Model implements AbstractModel {
     }
 
     result += stats[Stat.MST.ordinal()] * MST_COEFFICIENT;
-    result += stats[Stat.HST.ordinal()] * HST_COEFFICIENT;
-    result += stats[Stat.CRI.ordinal()] * CRI_COEFFICIENT;
 
     return result;
   }
@@ -92,50 +94,48 @@ public final class Model implements AbstractModel {
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.EXP);
+    stats.add(Stat.CRI);
     stats.add(Stat.MST);
-    stats.add(Stat.HST);
     result.put(Stat.HIT, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
-    stats.add(Stat.HST);
-    result.put(Stat.MST, stats);
+    result.put(Stat.CRI, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
+    stats.add(Stat.CRI);
     stats.add(Stat.MST);
     result.put(Stat.HST, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
-    stats.add(Stat.MST);
-    stats.add(Stat.HST);
+    stats.add(Stat.CRI);
     result.put(Stat.EXP, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
-    stats.add(Stat.MST);
-    stats.add(Stat.HST);
-    result.put(Stat.CRI, stats);
+    stats.add(Stat.CRI);
+    result.put(Stat.MST, stats);
 
     return result;
   }
 
   @Override public float calculateEPDeltaMax(Stat from, int amount) {
     switch (from) {
+      case HIT:
+        return amount * (EXP_COEFFICIENT_TO_CAP - HIT_COEFFICIENT_CAPPED);      // NOTE: Verify next-best stat
       case CRI:
         return amount * (HIT_COEFFICIENT_TO_CAP - CRI_COEFFICIENT);
       case HST:
         return amount * (HIT_COEFFICIENT_TO_CAP - HST_COEFFICIENT);
-      case MST:
-        return amount * (HIT_COEFFICIENT_TO_CAP - MST_COEFFICIENT);
-      case HIT:
-        return amount * (EXP_COEFFICIENT_TO_CAP - HIT_COEFFICIENT_CAPPED);
       case EXP:
         return amount * (HIT_COEFFICIENT_TO_CAP - EXP_COEFFICIENT_CAPPED);
+      case MST:
+        return amount * (HIT_COEFFICIENT_TO_CAP - MST_COEFFICIENT);
     }
     return 0.0f;
   }
