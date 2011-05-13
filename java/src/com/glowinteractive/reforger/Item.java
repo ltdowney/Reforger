@@ -122,6 +122,7 @@ public final class Item implements Comparable<Item>, TagNodeVisitor {
     if (!_parsed) {
       String[] pair;
       String[] elements;
+      String   attribute;
 
       URL url = null;
 
@@ -134,23 +135,25 @@ public final class Item implements Comparable<Item>, TagNodeVisitor {
       _name = (ref != null) ? StringEscapeUtils.unescapeHtml4(ref.getText().toString()) : "";
       //</editor-fold>
 
+      //<editor-fold defaultstate="collapsed" desc="Parse item ID.">
+      ref = _data.findElementByName("a", false);
+      assert ref != null : "Error: unable to determine item attributes.";
+      attribute = ref.getAttributeByName("href");
+      elements = attribute.split("/wow/en/item/");
+      assert elements.length == 2 : "Error: unexpected Armory data format.";
+      wowhead.append("item=").append(elements[1]);
+      //</editor-fold>
+
       //<editor-fold defaultstate="collapsed" desc="Extract data-item string.">
       ref = _data.findElementByName("a", false);
       assert ref != null : "Error: unable to determine item attributes.";
-      String attribute = ref.getAttributeByName("data-item");
+      attribute = ref.getAttributeByName("data-item");
       elements = StringEscapeUtils.unescapeHtml4((attribute != null) ? attribute : "").split("&");
       //</editor-fold>
 
       //<editor-fold defaultstate="collapsed" desc="Parse Armory data-item attributes.">
       for (String e : elements) {
         pair = e.split("=");
-
-        // TODO: For now we assume naïvely that the item ID is always listed first in the data-item attribute.
-
-        if ("i".equals(pair[0])) {
-          // Item ID
-          wowhead.append("item=").append(pair[1]);
-        }
 
         if ("e".equals(pair[0])) {
           // Permanent Enchantment

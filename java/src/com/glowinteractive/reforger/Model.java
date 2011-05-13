@@ -46,18 +46,18 @@ public final class Model implements AbstractModel {
   private static final int HIT_CAP = 601;
   private static final int EXP_CAP = 781;
 
-  private static final float HIT_COEFFICIENT_TO_CAP = 1.00f;
-  private static final float HIT_COEFFICIENT_CAPPED = 0.35f;
+  private static final float HIT_COEFFICIENT_TO_CAP = 1.10f;
+  private static final float HIT_COEFFICIENT_CAPPED = 0.60f;
 
-  private static final float CRI_COEFFICIENT = 0.75f;
-  private static final float HST_COEFFICIENT = 0.15f;
+  private static final float CRI_COEFFICIENT = 0.80f;
+  private static final float HST_COEFFICIENT = 0.70f;
 
-  private static final float EXP_COEFFICIENT_TO_CAP = 0.95f;
+  private static final float EXP_COEFFICIENT_TO_CAP = 1.05f;
   private static final float EXP_COEFFICIENT_CAPPED = 0.00f;
 
-  private static final float MST_COEFFICIENT = 0.55f;
+  private static final float MST_COEFFICIENT = 0.90f;
 
-  // EP value of hit/exp at respective caps.
+  // EP values of hit & exp at their respective caps.
   private static final float EP_HIT_CAP = HIT_CAP * HIT_COEFFICIENT_TO_CAP;
   private static final float EP_EXP_CAP = EXP_CAP * EXP_COEFFICIENT_TO_CAP;
 
@@ -94,31 +94,32 @@ public final class Model implements AbstractModel {
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.EXP);
-    stats.add(Stat.CRI);
     stats.add(Stat.MST);
+    stats.add(Stat.CRI);
     result.put(Stat.HIT, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
+    stats.add(Stat.MST);
     result.put(Stat.CRI, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
-    stats.add(Stat.CRI);
     stats.add(Stat.MST);
+    stats.add(Stat.CRI);
     result.put(Stat.HST, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
+    stats.add(Stat.MST);
     stats.add(Stat.CRI);
     result.put(Stat.EXP, stats);
 
     stats = EnumSet.noneOf(Stat.class);
     stats.add(Stat.HIT);
     stats.add(Stat.EXP);
-    stats.add(Stat.CRI);
     result.put(Stat.MST, stats);
 
     return result;

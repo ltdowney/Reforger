@@ -38,6 +38,7 @@
 
 package com.glowinteractive.reforger;
 
+import java.io.FileWriter;
 import java.net.URL;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ import java.util.List;
 
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.SimpleXmlSerializer;
 import org.htmlcleaner.TagNode;
 
 public final class Character {
