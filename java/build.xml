@@ -14,9 +14,11 @@
               failonerror="true"
               outputproperty="revision.number"/>
         <exec osfamily="windows"
-              executable="powershell ..\revision.ps1"
+              executable="powershell"
               failonerror="true"
-              outputproperty="revision.number"/>
+              outputproperty="revision.number">
+            <arg value="..\revision.ps1" />
+        </exec>
     </target>
 
     <target name="extract-date">
